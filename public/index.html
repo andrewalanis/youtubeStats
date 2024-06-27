@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Channel Stats</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-4">YouTube Channel Stats</h1>
+        <div class="mb-4">
+            <input type="text" id="channelId" placeholder="Enter Channel ID" class="p-2 border rounded">
+            <input type="number" id="cacheTTL" placeholder="Cache TTL (seconds)" class="p-2 border rounded" value="3600">
+            <button onclick="fetchChannelStats()" class="bg-blue-500 text-white p-2 rounded">Fetch Stats</button>
+        </div>
+        <div id="loading" class="hidden">Loading...</div>
+        <table id="videoTable" class="w-full bg-white shadow-md rounded hidden">
+            <thead>
+                <tr>
+                    <th class="p-2 border">Video Name</th>
+                    <th class="p-2 border">Publish Date</th>
+                    <th class="p-2 border">Total Views</th>
+                    <th class="p-2 border">Duration</th>
+                    <th class="p-2 border">Type</th>
+                    <th class="p-2 border">Likes</th>
+                    <th class="p-2 border">Dislikes</th>
+                    <th class="p-2 border">Comments</th>
+                </tr>
+            </thead>
+            <tbody id="videoTableBody"></tbody>
+        </table>
+        <div id="pagination" class="mt-4 text-center hidden">
+            <button id="loadMore" class="bg-blue-500 text-white p-2 rounded">Load More</button>
+        </div>
+    </div>
+    <script>
+        let nextPageToken = '';
+        let channelId = '';
+        let cacheTTL = 3600;
+
+        async function fetchChannelStats(pageToken = '') {
+            channelId = document.getElementById('channelId').value;
+            cacheTTL = document.getElementById('cacheTTL').value;
+            const loadingDiv = document.getElementById('loading');
+            const videoTable = document.getElementById('videoTable');
+            const videoTableBody = document.getElementById('videoTableBody');
+            const paginationDiv = document.getElementById('pagination');
+
+            if (!pageToken) {
+                loadingDiv.classList.remove('hidden');
+                videoTable.classList.add('hidden');
+                paginationDiv.classList.add('hidden');
+                videoTableBody.innerHTML = '';
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/channel-stats?channelId=${channelId}&pageToken=${pageToken}&cacheTTL=${cacheTTL}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                data.videos.forEach(video => {
+                    const row = videoTableBody.insertRow();
+                    row.innerHTML = `
+                        <td class="p-2 border">${video.name}</td>
+                        <td class="p-2 border">${video.publishDate}</td>
+                        <td class="p-2 border">${video.views.toLocaleString()}</td>
+                        <td class="p-2 border">${video.duration}</td>
+                        <td class="p-2 border">${video.isShort ? 'Short' : 'Long'}</td>
+                        <td class="p-2 border">${video.likes.toLocaleString()}</td>
+                        <td class="p-2 border">${video.dislikes.toLocaleString()}</td>
+                        <td class="p-2 border">${video.comments.toLocaleString()}</td>
+                    `;
+                });
+
+                loadingDiv.classList.add('hidden');
+                videoTable.classList.remove('hidden');
+
+                nextPageToken = data.nextPageToken;
+                if (nextPageToken) {
+                    paginationDiv.classList.remove('hidden');
+                } else {
+                    paginationDiv.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error fetching channel stats:', error);
+                loadingDiv.textContent = 'Error fetching data. Please try again.';
+            }
+        }
+
+        document.getElementById('loadMore').addEventListener('click', () => {
+            fetchChannelStats(nextPageToken);
+        });
+    </script>
+</body>
+</html>
