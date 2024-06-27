@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { config } from './config/config';
-import channelStatsRouter from './routes/channelStats';
+import { config } from './src/config/config';
+import channelStatsRouter from './src/routes/channelStats';
 
 const app = express();
 

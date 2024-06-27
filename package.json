@@ -2,9 +2,10 @@
   "name": "youtuberealstats",
   "version": "1.0.0",
   "description": "sdads",
-  "main": "server.js",
+  "main": "api/index.ts",
+  
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "ts-node src/api/index.ts",
     "build": "tsc",
     "vercel-build": "echo hello"
   },

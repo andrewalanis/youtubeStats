@@ -1,5 +1,5 @@
 import { google, youtube_v3 } from 'googleapis';
-import { config } from '../config/config';
+import { config } from '../src/config/config';
 import { cacheService } from './cacheService';
 
 const youtube = google.youtube({

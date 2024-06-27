@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache';
-import { config } from '../config/config';
+import { config } from '../src/config/config';
 
 class CacheService {
   private cache: NodeCache;
