@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "sourceMap": true,
+        "target": "ES2017",
+        "lib": ["esnext"],
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "moduleResolution": "Node",
+        "outDir": "dist",
+        "strict": true,
+        "allowSyntheticDefaultImports": true,
+        "noEmit": true,
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules"]
+}
