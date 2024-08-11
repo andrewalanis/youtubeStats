@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { config } from '../src/config/config';
+import { config } from '../config/config';
 
 class DatabaseService {
   private client: SupabaseClient;

@@ -5,7 +5,7 @@ import { databaseService } from '../services/databaseService';
 
 const router = Router();
 
-router.get('/api/channel-stats', async (req, res) => {
+router.get('/channel-stats', async (req, res) => {
   const channelId = req.query.channelId as string;
   const pageToken = (req.query.pageToken as string) || '';
   const pageSize = 50;

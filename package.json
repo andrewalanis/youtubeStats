@@ -2,7 +2,7 @@
   "name": "youtuberealstats",
   "version": "1.0.0",
   "description": "sdads",
-  "main": "api/index.ts",
+  "main": "src/api/index.ts",
   
   "scripts": {
     "start": "ts-node src/api/index.ts",

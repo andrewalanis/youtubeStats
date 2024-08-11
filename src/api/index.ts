@@ -6,8 +6,6 @@ import channelStatsRouter from '../routes/channelStats';
 const app = express();
 
 app.use(cors());
-app.use(channelStatsRouter);
-
-// Remove the app.listen() call
+app.use('/api', channelStatsRouter);  // Add '/api' prefix to all routes
 
 export default app;
